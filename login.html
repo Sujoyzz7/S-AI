@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - AI Chat Assistant</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap">
+
+    <style>
+        :root {
+            --primary: #6750A4;
+            --bg: #F7F7FB;
+            --card: #FFFFFF;
+            --text: #111111;
+            --muted: #747474;
+            --teal: #008080;
+        }
+
+        [data-theme="dark"] {
+            --bg: #0F0F12;
+            --card: #1C1C21;
+            --text: #F1F1F1;
+            --muted: #8E8E93;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.3s ease;
+        }
+
+        /* From Uiverse.io by akshat-patel28 */
+        .form-container {
+            width: 100%;
+            max-width: 400px;
+            background-color: var(--card);
+            box-shadow: rgba(0, 0, 0, 0.1) 0px 20px 50px;
+            border-radius: 24px;
+            box-sizing: border-box;
+            padding: 40px 30px;
+            animation: slideUp 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+            margin: 20px;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .title {
+            text-align: center;
+            margin: 10px 0 30px 0;
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--text);
+        }
+
+        .form {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+            margin-bottom: 15px;
+        }
+
+        .input {
+            border-radius: 20px;
+            border: 1px solid #c0c0c0;
+            outline: 0 !important;
+            box-sizing: border-box;
+            padding: 12px 15px;
+            font-family: 'Inter', sans-serif;
+            background: var(--card);
+            color: var(--text);
+            transition: border-color 0.3s;
+        }
+
+        .input:focus {
+            border-color: var(--teal);
+        }
+
+        .page-link {
+            text-decoration: underline;
+            margin: 0;
+            text-align: end;
+            color: var(--muted);
+            text-decoration-color: var(--muted);
+        }
+
+        .page-link-label {
+            cursor: pointer;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .page-link-label:hover {
+            color: var(--text);
+        }
+
+        .form-btn {
+            padding: 12px 15px;
+            border-radius: 20px;
+            border: 0 !important;
+            outline: 0 !important;
+            background: var(--teal);
+            color: white;
+            cursor: pointer;
+            box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+            font-weight: 600;
+            font-size: 14px;
+            transition: transform 0.2s, background 0.3s;
+        }
+
+        .form-btn:hover {
+            background: #006666;
+            transform: translateY(-1px);
+        }
+
+        .form-btn:active {
+            box-shadow: none;
+            transform: translateY(0);
+        }
+
+        .sign-up-label {
+            margin: 0;
+            font-size: 12px;
+            color: var(--muted);
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        .sign-up-link {
+            margin-left: 5px;
+            font-size: 12px;
+            text-decoration: underline;
+            text-decoration-color: var(--teal);
+            color: var(--teal);
+            cursor: pointer;
+            font-weight: 800;
+        }
+
+        .buttons-container {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            margin-top: 20px;
+            gap: 15px;
+        }
+
+        .apple-login-button,
+        .google-login-button {
+            border-radius: 20px;
+            box-sizing: border-box;
+            padding: 12px 15px;
+            box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px,
+                rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 13px;
+            gap: 8px;
+            transition: background 0.3s, transform 0.2s;
+            font-weight: 500;
+        }
+
+        .apple-login-button:hover,
+        .google-login-button:hover {
+            transform: translateY(-1px);
+        }
+
+        .apple-login-button {
+            background-color: #000;
+            color: #fff;
+            border: 2px solid #000;
+        }
+
+        .google-login-button {
+            border: 2px solid #e0e0e0;
+            background: white;
+            color: #444;
+        }
+
+        .apple-icon,
+        .google-icon {
+            font-size: 18px;
+            margin-bottom: 1px;
+        }
+
+        #error-msg {
+            color: #d32f2f;
+            font-size: 12px;
+            text-align: center;
+            margin-bottom: 10px;
+            min-height: 18px;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        @media (max-width: 480px) {
+            .form-container {
+                padding: 30px 20px;
+                border-radius: 20px;
+            }
+
+            .title {
+                font-size: 24px;
+                margin-bottom: 20px;
+            }
+
+            .form {
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="form-container">
+        <p class="title" id="auth-title">Welcome back</p>
+        <div id="error-msg"></div>
+        <form class="form" id="auth-form">
+            <input type="email" id="email" class="input" placeholder="Email" required>
+            <input type="password" id="password" class="input" placeholder="Password" required>
+            <p class="page-link">
+                <a href="forgot-password.html" class="page-link-label"
+                    style="text-decoration: none; color: inherit;">Forgot Password?</a>
+            </p>
+            <button type="submit" class="form-btn" id="submit-btn">Log in</button>
+        </form>
+        <p class="sign-up-label">
+            Don't have an account?<a href="signup.html" class="sign-up-link">Sign up</a>
+        </p>
+        <div class="buttons-container">
+
+            <div class="google-login-button">
+                <svg stroke="currentColor" fill="currentColor" stroke-width="0" version="1.1" x="0px" y="0px"
+                    class="google-icon" viewBox="0 0 48 48" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
+                    <path fill="#FFC107"
+                        d="M43.611,20.083H42V20H24v8h11.303c-1.649,4.657-6.08,8-11.303,8c-6.627,0-12-5.373-12-12c0-6.627,5.373-12,12-12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C12.955,4,4,12.955,4,24c0,11.045,8.955,20,20,20c11.045,0,20-8.955,20-20C44,22.659,43.862,21.35,43.611,20.083z">
+                    </path>
+                    <path fill="#FF3D00"
+                        d="M6.306,14.691l6.571,4.819C14.655,15.108,18.961,12,24,12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C16.318,4,9.656,8.337,6.306,14.691z">
+                    </path>
+                    <path fill="#4CAF50"
+                        d="M24,44c5.166,0,9.86-1.977,13.409-5.192l-6.19-5.238C29.211,35.091,26.715,36,24,36c-5.202,0-9.619-3.317-11.283-7.946l-6.522,5.025C9.505,39.556,16.227,44,24,44z">
+                    </path>
+                    <path fill="#1976D2"
+                        d="M43.611,20.083H42V20H24v8h11.303c-0.792,2.237-2.231,4.166-4.087,5.571c0.001-0.001,0.002-0.001,0.003-0.002l6.19,5.238C36.971,39.205,44,34,44,24C44,22.659,43.862,21.35,43.611,20.083z">
+                    </path>
+                </svg>
+                <span>Log in with Google</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase SDKs -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyDFN-K_POAvh99DfkAlX65jJNbvJhHc020",
+            authDomain: "fir-ai-8a032.firebaseapp.com",
+            projectId: "fir-ai-8a032",
+            storageBucket: "fir-ai-8a032.firebasestorage.app",
+            messagingSenderId: "791127988771",
+            appId: "1:791127988771:web:e7e662b4882b9b2523ef96",
+            measurementId: "G-FVE80FC5T9"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const googleProvider = new GoogleAuthProvider();
+
+        const authForm = document.getElementById('auth-form');
+        const emailInput = document.getElementById('email');
+        const passwordInput = document.getElementById('password');
+        const submitBtn = document.getElementById('submit-btn');
+        const errorMsg = document.getElementById('error-msg');
+
+        authForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = emailInput.value.trim();
+            const password = passwordInput.value.trim();
+            errorMsg.textContent = '';
+
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Processing...';
+
+            try {
+                await signInWithEmailAndPassword(auth, email, password);
+                window.location.href = 'index.html';
+            } catch (error) {
+                console.error(error);
+                let message = "An error occurred";
+                if (error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password' || error.code === 'auth/invalid-credential') {
+                    message = "Invalid email or password";
+                } else if (error.code === 'auth/too-many-requests') {
+                    message = "Too many failed attempts. Try again later.";
+                } else {
+                    message = error.message;
+                }
+                errorMsg.textContent = message;
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Log in';
+            }
+        });
+
+        // Google Login
+        const googleBtn = document.querySelector('.google-login-button');
+        googleBtn.addEventListener('click', async () => {
+            errorMsg.textContent = '';
+            try {
+                await signInWithPopup(auth, googleProvider);
+                window.location.href = 'index.html';
+            } catch (error) {
+                console.error(error);
+                errorMsg.textContent = error.message;
+            }
+        });
+
+        // Check if already logged in
+        onAuthStateChanged(auth, (user) => {
+            if (user) window.location.href = 'index.html';
+        });
+    </script>
+</body>
+
+</html>
