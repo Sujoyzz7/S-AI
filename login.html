@@ -28,25 +28,58 @@
             margin: 0;
             padding: 0;
             font-family: 'Inter', sans-serif;
-            background: var(--bg);
+            background: radial-gradient(circle at 15% 20%, rgba(103, 80, 164, 0.16) 0, transparent 45%),
+                radial-gradient(circle at 85% 80%, rgba(0, 128, 128, 0.2) 0, transparent 45%),
+                var(--bg);
             height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
             transition: background-color 0.3s ease;
+            overflow: hidden;
+            position: relative;
+        }
+
+        body::before,
+        body::after {
+            content: '';
+            position: absolute;
+            width: 380px;
+            height: 380px;
+            border-radius: 999px;
+            filter: blur(12px);
+            z-index: 0;
+            animation: drift 12s ease-in-out infinite;
+        }
+
+        body::before {
+            background: linear-gradient(145deg, rgba(103, 80, 164, 0.28), rgba(103, 80, 164, 0.06));
+            top: -130px;
+            left: -110px;
+        }
+
+        body::after {
+            background: linear-gradient(145deg, rgba(0, 128, 128, 0.24), rgba(0, 128, 128, 0.06));
+            bottom: -140px;
+            right: -120px;
+            animation-delay: -6s;
         }
 
         /* From Uiverse.io by akshat-patel28 */
         .form-container {
             width: 100%;
             max-width: 400px;
-            background-color: var(--card);
+            background: color-mix(in srgb, var(--card) 92%, transparent);
+            backdrop-filter: blur(10px);
             box-shadow: rgba(0, 0, 0, 0.1) 0px 20px 50px;
             border-radius: 24px;
             box-sizing: border-box;
             padding: 40px 30px;
-            animation: slideUp 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+            animation: slideUp 0.7s cubic-bezier(0.23, 1, 0.32, 1);
             margin: 20px;
+            position: relative;
+            z-index: 1;
+            border: 1px solid rgba(255, 255, 255, 0.28);
         }
 
         @keyframes slideUp {
@@ -67,6 +100,8 @@
             font-size: 28px;
             font-weight: 800;
             color: var(--text);
+            letter-spacing: -0.01em;
+            animation: fadeIn 0.6s ease 0.2s both;
         }
 
         .form {
@@ -86,11 +121,22 @@
             font-family: 'Inter', sans-serif;
             background: var(--card);
             color: var(--text);
-            transition: border-color 0.3s;
+            transition: border-color 0.3s, box-shadow 0.3s, transform 0.25s;
+            animation: fadeIn 0.55s ease both;
+        }
+
+        .input:nth-of-type(1) {
+            animation-delay: 0.25s;
+        }
+
+        .input:nth-of-type(2) {
+            animation-delay: 0.35s;
         }
 
         .input:focus {
             border-color: var(--teal);
+            box-shadow: 0 0 0 5px rgba(0, 128, 128, 0.12);
+            transform: translateY(-1px);
         }
 
         .page-link {
@@ -123,6 +169,7 @@
             font-weight: 600;
             font-size: 14px;
             transition: transform 0.2s, background 0.3s;
+            animation: fadeIn 0.6s ease 0.45s both, pulseGlow 2.8s ease-in-out 1.2s infinite;
         }
 
         .form-btn:hover {
@@ -141,6 +188,7 @@
             color: var(--muted);
             text-align: center;
             margin-top: 10px;
+            animation: fadeIn 0.6s ease 0.52s both;
         }
 
         .sign-up-link {
@@ -160,6 +208,7 @@
             justify-content: flex-start;
             margin-top: 20px;
             gap: 15px;
+            animation: fadeIn 0.6s ease 0.6s both;
         }
 
         .apple-login-button,
@@ -182,6 +231,49 @@
         .apple-login-button:hover,
         .google-login-button:hover {
             transform: translateY(-1px);
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(8px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes pulseGlow {
+            0%,
+            100% {
+                box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+            }
+
+            50% {
+                box-shadow: 0 10px 24px rgba(0, 128, 128, 0.32);
+            }
+        }
+
+        @keyframes drift {
+            0%,
+            100% {
+                transform: translate3d(0, 0, 0) scale(1);
+            }
+
+            50% {
+                transform: translate3d(0, 20px, 0) scale(1.05);
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                animation: none !important;
+                transition: none !important;
+            }
         }
 
         .apple-login-button {
